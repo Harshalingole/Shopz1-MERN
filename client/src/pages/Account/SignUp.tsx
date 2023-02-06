@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC, ReactElement } from "react";
+import React, { FC, ReactElement,ChangeEvent,useState,useEffect,FormEvent } from "react";
 import { BsFacebook } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { GrMail } from "react-icons/gr";
@@ -7,14 +7,24 @@ import { RiLockUnlockFill } from "react-icons/ri";
 import { FaPhoneSquareAlt } from "react-icons/fa";
 import { HiUserCircle } from "react-icons/hi";
 import WelcomeImg from "../../assets/images/standing.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
+import { useSignupUserMutation } from "../../redux/api/authApi";
+import { useSnackbar } from "notistack";
 interface IconBtnProps {
   icon: ReactElement;
   text: string;
 }
 interface FormInputProps extends IconBtnProps {
   type?: string;
+  onChangeHandler?: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+interface userProp {
+  name: string,
+  number: number,
+  email: string,
+  password: string,
 }
 export const IconBtn: FC<IconBtnProps> = ({ icon, text }) => {
   return (
@@ -27,7 +37,7 @@ export const IconBtn: FC<IconBtnProps> = ({ icon, text }) => {
     </button>
   );
 };
-export const FormInput: FC<FormInputProps> = ({ icon, text, type }) => {
+export const FormInput: FC<FormInputProps> = ({ icon, text, type,onChangeHandler }) => {
   return (
     <div className="flex flex-col mb-2">
       <div className="flex relative ">
@@ -39,6 +49,7 @@ export const FormInput: FC<FormInputProps> = ({ icon, text, type }) => {
           id="sign-in-email"
           className=" rounded-r-lg flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-1 focus:ring-purple-600 focus:border-transparent"
           placeholder={text}
+          onChange={onChangeHandler}
         />
       </div>
     </div>
@@ -46,6 +57,34 @@ export const FormInput: FC<FormInputProps> = ({ icon, text, type }) => {
 };
 
 const Signup: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const {enqueueSnackbar} = useSnackbar();
+
+  const [user, setUser] = useState<userProp>({name:'',number: 0,email: '',password: ''})
+  const [signupUser,{data,isError,isSuccess}] = useSignupUserMutation()
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log("sign up btn click");
+    console.log(user)
+    signupUser({...user});
+    console.log(data)
+  }
+
+  const redirect = location.search ? location.search.split("=")[1] : "login";
+
+  useEffect(() => {
+    if(isError) {
+      enqueueSnackbar(isError,{variant: 'error'})
+    }
+    // After successfully authentication redirect 
+    if(isSuccess) {
+      navigate(`/${redirect}`)
+      enqueueSnackbar("Account Created  Successfully",{variant: 'success'})
+      enqueueSnackbar("Now Login to Your Account",{variant:'info',autoHideDuration: 2000})
+    }
+  }, [redirect, isSuccess, navigate, isError, enqueueSnackbar])
   return (
     <>
       <div className="register-wrapper md:scale-90  flex flex-col md:flex-row flex-nowrap justify-start items-center md:-mt-4  md:w-3/5 mx-2 md:mx-auto ">
@@ -82,32 +121,44 @@ const Signup: FC = () => {
             </div>
           </div>
           {/*Form for login  */}
-          <form action="#" autoComplete="off" className="mt-4">
+          <form  autoComplete="off" className="mt-4" onSubmit={handleSubmit}>
             <FormInput
               icon={<HiUserCircle size="1rem" />}
               text="Full Name"
               type={"text"}
+              onChangeHandler={(e) => setUser((prev) => {
+                return {...prev,name: e.target.value}
+              })}
             />
             <FormInput
               icon={<FaPhoneSquareAlt size="1rem" />}
               text="Mobile Number"
               type={"number"}
+              onChangeHandler={(e) => setUser((prev) => {
+                return {...prev,number: Number(e.target.value)}
+              })}
             />
             {/* Form Input - Email & Password */}
             <FormInput
               icon={<GrMail size="1rem" />}
               text="Your Email"
               type={"email"}
+              onChangeHandler={(e) => setUser((prev) => {
+                return {...prev,email: e.target.value}
+              })}
             />
             <FormInput
               icon={<RiLockUnlockFill size="1rem" />}
               text="Your Password"
               type={"password"}
+              onChangeHandler={(e) => setUser((prev) => {
+                return {...prev,password: e.target.value}
+              })}
             />
             {/* Forgot Password */}
 
             {/* Login Button */}
-            <Button  text="Sign up" color= "00FAFF" />
+            <Button  text="Sign up" color= "00FAFF" btnType="submit" />
             <div className="flex items-center justify-center mt-6">
               <Link
                 to={"/login"}

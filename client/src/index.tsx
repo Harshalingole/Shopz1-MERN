@@ -6,15 +6,32 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { SnackbarProvider } from "notistack";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <SnackbarProvider
+        maxSnack={2}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        iconVariant={{
+          success: '✅',
+          error: '✖️',
+          warning: '⚠️',
+          info: 'ℹ️',
+        }}
+      >
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -12,6 +12,11 @@ app.use(morgan("dev"));
 app.use(express.json());
 /* this is middleware that catches that get which then check the noteRoutes
 and look which one is there */
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 app.use("/api/user", userRoutes)
 
 // to handle if Endpoint  does not exist
