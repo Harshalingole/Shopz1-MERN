@@ -27,7 +27,7 @@ const Navbar:FC<Props> = () => {
             <Categories />
             {/* Other Options */}
             <div className="flex flex-col flex-nowrap justify items-end gap-2 text-xl">
-              {/* Helper Links div */}
+              {/* Helper Links div  - help / login*/}
               <HelperLinks />
               {/* Container for -- Search & user most used iconbtn*/}
               <div className="flex flex-nowrap  justify-between gap-4">

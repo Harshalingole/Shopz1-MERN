@@ -1,67 +1,42 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
+import type { PayloadAction } from '@reduxjs/toolkit'
+import { userSliceProp } from '../../types/types'
 
-interface Credentials {
-  email: string;
-  password: string;
+export interface UserState {
+  user: userSliceProp | null;
+  isUser: boolean;
 }
 
-interface AuthState {
-  user: any;
-  loading: boolean;
-  error: string | null;
+const initialState: UserState = {
+  user: null,
+  isUser: false,
 }
 
-export const loginUser = createAsyncThunk<any, Credentials>(
-  'auth/loginUser',
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response = await fetch(`http://localhost:4000/api/user/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return console.log(error);
-      
-    }
-  }
-);
-
-const authSlice = createSlice({
-  name: 'auth',
-  initialState: {
-    user: null,
-    loading: false,
-    error: null,
-  } as AuthState,
+export const userSlice = createSlice({
+  name: 'user',
+  initialState,
   reducers: {
-    reset: (state) => ({
-      user: null,
-      loading: false,
-      error: null,
-    } as AuthState),
-  },
-  extraReducers: {
-    [loginUser.pending.type]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [loginUser.fulfilled.type]: (state, action) => {
+    setUser: (state,action: PayloadAction<userSliceProp>) => {
       state.user = action.payload;
-      state.loading = false;
-      state.error = null;
+      state.user == null ? state.isUser = false : state.isUser = true;
     },
-    [loginUser.rejected.type]: (state, action) => {
-      state.user = null;
-      state.loading = false;
-      state.error = action.payload;
-    },
+    isUser: (state) => {
+      state.user == null ? state.isUser = false : state.isUser = true
+    }
+    // increment: (state) => {
+      
+    //   state.value += 1
+    // },
+    // decrement: (state) => {
+    //   state.value -= 1
+    // },
+    // incrementByAmount: (state, action: PayloadAction<number>) => {
+    //   state.value += action.payload
+    // },
   },
-});
+})
 
-export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+// Action creators are generated for each case reducer function
+export const { setUser,isUser } = userSlice.actions
+
+export default userSlice.reducer

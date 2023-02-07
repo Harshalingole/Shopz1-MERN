@@ -1,3 +1,17 @@
+// Slice data props
+export type userSliceProp =  {
+  name: string;
+  number: number;
+  email: string;
+  gender?: string;
+  password: string;
+  role: string;
+  createdAt?: Date;
+  resetPasswordToken?: string;
+  resetPasswordExpire?: string;
+}
+
+
 export type IconProps = {
   route: string;
   src: React.ReactNode;

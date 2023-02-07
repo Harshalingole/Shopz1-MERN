@@ -10,13 +10,17 @@ import Button from "../../components/Button/Button";
 import { useLoginUserMutation } from "../../redux/api/authApi";
 import { FormInput, IconBtn } from "./SignUp";
 import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/Slice/userSlice";
 
 const Login:FC = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const {enqueueSnackbar} = useSnackbar();
   const location = useLocation();
 
-  const [loginUser, {isError,isSuccess}] = useLoginUserMutation();
+  const [loginUser, {data,isError,isSuccess}] = useLoginUserMutation();
   const [email,setEmail] = useState<string>("");
   const [password,setPassword] = useState<string>("");
 
@@ -35,12 +39,13 @@ const Login:FC = () => {
     if(isError) {
       enqueueSnackbar(isError,{variant: 'error'})
     }
-    // After successfully authentication redirect 
+    // After successfully authentication redirect | msg | setUser data 
     if(isSuccess) {
+      dispatch(setUser(data?.user))
       navigate(`/${redirect}`)
       enqueueSnackbar("Login Successfully",{variant: "success"})
     }
-  }, [redirect, isSuccess, navigate, isError, enqueueSnackbar])
+  }, [redirect, isSuccess, navigate, isError, enqueueSnackbar, dispatch, data?.user])
   
     return (
       <> 
