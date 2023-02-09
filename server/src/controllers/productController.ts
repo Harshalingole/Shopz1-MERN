@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import productModel from "../models/productModel";
-import { User } from "../models/userModel";
 import SearchFeatures from "../util/SearchFeatures";
 type newProductbody = {
   name: string;

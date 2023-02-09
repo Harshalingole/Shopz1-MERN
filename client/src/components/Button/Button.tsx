@@ -8,7 +8,7 @@ type ButtonProps = {
 }
 const Button: FC<ButtonProps> = ({text="View All",color="#00FAFF",btnType,onclick}) => {
     return (
-        <button onClick={onclick} type={btnType} className={`flex flex-row justify-center items-center bg-blue-400 bg-[${color}] py-2 rounded-md`}>
+        <button onClick={onclick} type={btnType} className={`flex flex-row w-full justify-center items-center bg-blue-400 bg-[${color}] py-2 rounded-md`}>
             <h1 className="font-bold text-gray-700 text-lg">{text}</h1>
         </button>
     )

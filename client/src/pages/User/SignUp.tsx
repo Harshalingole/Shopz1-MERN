@@ -11,6 +11,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
 import { useSignupUserMutation } from "../../redux/api/authApi";
 import { useSnackbar } from "notistack";
+import Loader from "../Layouts/Loader";
 interface IconBtnProps {
   icon: ReactElement;
   text: string;
@@ -62,7 +63,7 @@ const Signup: FC = () => {
   const {enqueueSnackbar} = useSnackbar();
 
   const [user, setUser] = useState<userProp>({name:'',number: 0,email: '',password: ''})
-  const [signupUser,{data,isError,isSuccess}] = useSignupUserMutation()
+  const [signupUser,{data,isError,isSuccess,isLoading}] = useSignupUserMutation()
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -159,6 +160,7 @@ const Signup: FC = () => {
 
             {/* Login Button */}
             <Button  text="Sign up" color= "00FAFF" btnType="submit" />
+            {isLoading && <Loader />}
             <div className="flex items-center justify-center mt-6">
               <Link
                 to={"/login"}

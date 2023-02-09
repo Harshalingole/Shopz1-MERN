@@ -15,11 +15,11 @@ app.use(express.json());
 and look which one is there */
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
-  res.header("Access-Control-Allow-Origin", "http://localhost:3001");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-app.use("/api/user", userRoutes)
+
+app.use("/api", userRoutes)
 app.use('/api', productRoutes)
 // to handle if Endpoint  does not exist
 app.use((req,res,next) => {

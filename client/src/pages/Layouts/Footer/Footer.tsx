@@ -69,10 +69,10 @@ const Footer: FC = (props: Props) => {
       {/* Footer Section Ends */}
       <div className="px-16 py-6 w-full bg-[#282C31] hidden sm:flex justify-between items-center text-sm text-white">
             <a href="#" target="_blank" rel="noreferrer" className="flex items-center gap-2">
-              <span className="text-yellow-400"><MdWork size={'1rem'}/></span> Become a Seller
+              <span className="text-[#00FAFF]"><MdWork size={'1rem'}/></span> Sell on Shopz1
             </a>
             <a href="#" target="_blank" rel="noreferrer" className="flex items-center gap-2">
-              <span className="text-yellow-400"><FiHelpCircle size={'1rem'} /></span> Help Center
+              <span className="text-[#00FAFF]"><FiHelpCircle size={'1rem'} /></span> Help Center
             </a>
             <span>&copy; {new Date().getFullYear()} Shopz1.com by Harshal Inogle</span>
             <img draggable="false" src={imgPaymentMethods} alt="Card Payment" />

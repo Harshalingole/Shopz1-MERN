@@ -12,6 +12,8 @@ import { FormInput, IconBtn } from "./SignUp";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/Slice/userSlice";
+import Loader from "../Layouts/Loader";
+// import { useAppDispatch } from "../../redux/hooks";
 
 const Login:FC = () => {
   const dispatch = useDispatch();
@@ -20,12 +22,12 @@ const Login:FC = () => {
   const {enqueueSnackbar} = useSnackbar();
   const location = useLocation();
 
-  const [loginUser, {data,isError,isSuccess}] = useLoginUserMutation();
+  const [loginUser, {data,isError,isSuccess,isLoading}] = useLoginUserMutation();
   const [email,setEmail] = useState<string>("");
   const [password,setPassword] = useState<string>("");
 
   const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); 
     console.log("login btn click")
     const values: {email: string,password: string} = {
       email: email,
@@ -100,6 +102,7 @@ const Login:FC = () => {
               </div>
               {/* Login Button */}
              <Button  text="Login" color= "00FAFF" btnType="submit" />
+             {isLoading && <Loader h="1rem" w="1/4"  />}
               <div className="flex items-center justify-center mt-6">
                 <Link
                   to={"/signup"}

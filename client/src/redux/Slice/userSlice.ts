@@ -4,11 +4,13 @@ import { userSliceProp } from '../../types/types'
 
 export interface UserState {
   user: userSliceProp | null;
+  token: string | null;
   isUser: boolean;
 }
 
 const initialState: UserState = {
   user: null,
+  token: null,
   isUser: false,
 }
 
@@ -18,21 +20,12 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state,action: PayloadAction<userSliceProp>) => {
       state.user = action.payload;
+      state.token = action.payload.password;
       state.user == null ? state.isUser = false : state.isUser = true;
     },
     isUser: (state) => {
       state.user == null ? state.isUser = false : state.isUser = true
     }
-    // increment: (state) => {
-      
-    //   state.value += 1
-    // },
-    // decrement: (state) => {
-    //   state.value -= 1
-    // },
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload
-    // },
   },
 })
 

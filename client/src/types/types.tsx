@@ -10,7 +10,18 @@ export type userSliceProp =  {
   resetPasswordToken?: string;
   resetPasswordExpire?: string;
 }
-
+export interface productSliceProp {
+  name: string;
+  description: string;
+  price: number;
+  cuttedPrice: number;
+  imgaes: string[];
+  brand: string;
+  category: string;
+  stock: number;
+  warranty?: number;
+  createdAt: Date;
+}
 
 export type IconProps = {
   route: string;
