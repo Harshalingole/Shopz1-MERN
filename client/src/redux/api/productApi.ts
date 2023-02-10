@@ -12,6 +12,9 @@ export const productApi = createApi({
     getAllProducts: builder.query({
       query: (products: string) => `${products}`
     }),
+    getProduct: builder.query({
+      query:(id: number) => `products/${id}`
+    }),
     // for user signup
     creteProduct: builder.mutation({
       query:(body: productSliceProp) => {
@@ -27,4 +30,4 @@ export const productApi = createApi({
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useGetAllProductsQuery,useCreteProductMutation } = productApi
+export const { useGetAllProductsQuery,useGetProductQuery,useCreteProductMutation } = productApi

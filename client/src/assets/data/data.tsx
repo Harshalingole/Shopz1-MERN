@@ -3,8 +3,30 @@ import FemaleModal from "../../assets/images/category/femailemodle.jpg";
 import KidModal from "../../assets/images/category/Kidmodel.jpg"
 import MenModal from "../../assets/images/category/malemodel.png";
 // Product Category Data
+export interface navCategories {
+  title: string;
+  link: string;
+}
+export const navCategory: navCategories[] = [
+  {
+    title: 'All',
+    link: 'products'
+  },
+  {
+    title: "Men",
+    link: "men"
+  },
+  {
+    title: "Women",
+    link: "women"
+  },
+  {
+    title: "Kid",
+    link: "kids"
+  }
+]
 
-export const categories: string[] = ['Men','Women','Kid']
+export const categories: string[] = ['All','Men','Women','Kid']
 export const getPrdCategory: prdCatProps[] = [
     {
         src: FemaleModal,

@@ -6,10 +6,11 @@ import { ProductsProps } from '../../pages/AllProducts/Product';
 export interface ProductState {
   value: number;
   products: ProductsProps[] | null;
-  product: productSliceProp | null;
+  product: ProductsProps | null;
   productsCount: number;
   filteredProductsCount: number;
   resultPerPage: number;
+  loading: boolean;
 }
 
 const initialState: ProductState = {
@@ -19,17 +20,20 @@ const initialState: ProductState = {
   productsCount: 0,
   filteredProductsCount: 0,
   resultPerPage: 12,
+  loading: true,
 }
 
 export const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    setProduct: (state,action: PayloadAction<productSliceProp>) => {
+    setProduct: (state,action: PayloadAction<ProductsProps>) => {
         state.product = action.payload;
+        state.loading = false;
     },
     setAllProducts: (state,action: PayloadAction<ProductsProps[]>) => {
         state.products = action.payload;
+        state.loading = false;
         state.productsCount = state.products?.length;
     }
   },

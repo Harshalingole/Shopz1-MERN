@@ -11,5 +11,12 @@ export const Icon: React.FC<IconProps> = ({ route, src, img }) => {
 };
 
 export const getRandomProducts = (prdArray: any[], n: number): any[] => {
-  return prdArray.sort(() => 0.5 - Math.random()).slice(0, n);
+  const sortedArray = [...prdArray].sort(() => 0.5 - Math.random());
+  return sortedArray.slice(0, n);
+}
+
+export const getDeliveryDate = () => {
+  const deliveryDate = new Date();
+  deliveryDate.setDate(new Date().getDate() + 7)
+  return deliveryDate.toUTCString().substring(0, 11);
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import SliderBanner from "../../../components/Slider/Banner/SliderBanner";
-import HeroProductSlider from "../../../components/Slider/Product/HeroProductSlider";
+import HeroProductSlider from "../../../components/Slider/OfferProduct/HeroProductSlider";
 import HeroCategories from "./HeroCategories";
 import HeroFeatures from "./HeroFeatures";
 

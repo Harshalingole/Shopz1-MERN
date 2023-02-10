@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import StarIcon from "@mui/icons-material/Star";
 
+// dummy json product prop
 export type ProductsProps = {
   id: number;
   title: string;

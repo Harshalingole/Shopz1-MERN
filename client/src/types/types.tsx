@@ -10,6 +10,20 @@ export type userSliceProp =  {
   resetPasswordToken?: string;
   resetPasswordExpire?: string;
 }
+// dummy json product prop
+// export type ProductsProps = {
+//   id: number;
+//   title: string;
+//   description: string;
+//   price: number;
+//   discountPercentage: number;
+//   rating: number;
+//   stock: number;
+//   brand: string;
+//   category: string;
+//   thumbnail: string;
+//   images: string[];
+// };
 export interface productSliceProp {
   name: string;
   description: string;

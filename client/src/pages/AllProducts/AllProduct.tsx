@@ -6,6 +6,7 @@ import {
   RadioGroup,
   Slider,
 } from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import React, { useEffect, useState } from "react";
@@ -32,7 +33,7 @@ const AllProduct = (props: Props) => {
   const [category, setCategory] = useState(
     location.search ? location.search.split("=")[1] : ""
   );
-  // const [ratings,setRatings] = useState<number>(0);
+  const [ratings,setRatings] = useState<number>(0);
 
   // pagination
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -43,7 +44,7 @@ const AllProduct = (props: Props) => {
   );
   // filter toggles
   const [categoryToggle, setCategoryToggle] = useState<boolean>(true);
-  // const [ratingsToggle,setRatingsToggle] = useState<boolean>(true);
+  const [ratingsToggle,setRatingsToggle] = useState<boolean>(true);
 
   // useAppSelector from products
   // const keyword: string = params.keyword;
@@ -55,9 +56,9 @@ const AllProduct = (props: Props) => {
   const clearFilters = () => {
     setPrice([0, 200000]);
     setCategory("");
-    // setRatings(0);
+    setRatings(0);
   };
-  console.log(products);
+  // console.log(products);
   useEffect(() => {
     dispatch(setAllProducts(data?.products))
     if (isError) {
@@ -155,7 +156,7 @@ const AllProduct = (props: Props) => {
                 {/* category filter */}
 
                 {/* ratings filter */}
-                {/* <div className="flex flex-col border-b px-4">
+                <div className="flex flex-col border-b px-4">
 
                                     <div className="flex justify-between cursor-pointer py-2 pb-4 items-center" onClick={() => setRatingsToggle(!ratingsToggle)}>
                                         <p className="font-medium text-xs uppercase">ratings</p>
@@ -182,7 +183,7 @@ const AllProduct = (props: Props) => {
                                         </div>
                                     )}
 
-                                </div> */}
+                                </div>
                 {/* ratings filter */}
               </div>
             </div>
