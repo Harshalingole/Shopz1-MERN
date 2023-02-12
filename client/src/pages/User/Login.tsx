@@ -10,44 +10,68 @@ import Button from "../../components/Button/Button";
 import { useLoginUserMutation } from "../../redux/api/authApi";
 import { FormInput, IconBtn } from "./SignUp";
 import { useSnackbar } from "notistack";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/Slice/userSlice";
+import {setErrors, setUser } from "../../redux/Slice/userSlice";
 import Loader from "../Layouts/Loader";
-// import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+interface errorsType {
+  // data: {errors: {value: string,msg: string,param: string,location: string}[]}
+  data?: unknown,
+  status: number | string
+}
 
 const Login:FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const {enqueueSnackbar} = useSnackbar();
   const location = useLocation();
-
-  const [loginUser, {data,isError,isSuccess,isLoading}] = useLoginUserMutation();
+  const [loginUser, {data,error,isSuccess,isError,isLoading}] = useLoginUserMutation();
   const [email,setEmail] = useState<string>("");
   const [password,setPassword] = useState<string>("");
-
+  
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault(); 
-    console.log("login btn click")
     const values: {email: string,password: string} = {
       email: email,
       password: password
     }
-    loginUser({...values})
+    if(values.email === "" && values.password === ""){
+      enqueueSnackbar("Please Enter Email & Password",{variant: 'error'})
+      return;
+    }
+    loginUser({...values});
   }
+
   const redirect = location.search ? location.search.split("=")[1] : "account";
+  
+
 
   useEffect(() => {
+    // if user not verified
     if(isError) {
-      enqueueSnackbar(isError,{variant: 'error'})
+      if((error as any).data.msg === "Please Verify Your Email"){
+        navigate('/send-verify-mail',{
+          state: {email},
+        })
+      }
+    }
+    // Handling Error
+    if(error) {
+      const errorMsg = (error as any)?.data?.errors || (error as any)?.data?.msg;
+      enqueueSnackbar(errorMsg, {
+        variant: errorMsg === "Please Verify Your Email" ? "success" : 'error',
+      });
     }
     // After successfully authentication redirect | msg | setUser data 
+    
     if(isSuccess) {
       dispatch(setUser(data?.user))
       navigate(`/${redirect}`)
       enqueueSnackbar("Login Successfully",{variant: "success"})
     }
-  }, [redirect, isSuccess, navigate, isError, enqueueSnackbar, dispatch, data?.user])
+  },[data?.user, dispatch, email, enqueueSnackbar, error, isError, isSuccess, navigate, redirect])
+
+
   
     return (
       <> 
@@ -65,11 +89,11 @@ const Login:FC = () => {
           {/* Right Side */}
           {/* Login Center */}
           <div className="flex flex-col w-full max-w-md px-4 py-8 bg-white   md:border-l border-slate-500 rounded-lg shadow-2xl  sm:px-6 md:px-8 lg:px-10">
-            <div className="self-center mb-6 text-xl font-light text-gray-600 sm:text-2xl ">
-              Login To Your Account
+            <div className="self-center mb-6 text-xl font-medium text-gray-600 sm:text-2xl ">
+              Login to your account
             </div>
             {/* Login Option - FB & Google */}
-            <div className="flex gap-4 item-center">
+            {/* <div className="flex gap-4 item-center">
               <IconBtn
                 icon={<BsFacebook size="1.1rem" color="white" />}
                 text="Facebook"
@@ -78,7 +102,7 @@ const Login:FC = () => {
                 icon={<FcGoogle size="1.1rem" color="white" />}
                 text="Google"
               />
-            </div>
+            </div> */}
   
             {/*Form for login  */}
             <form  autoComplete="off" className="mt-8" onSubmit={handleSubmit} >
@@ -87,17 +111,18 @@ const Login:FC = () => {
               <FormInput
                 icon={<RiLockUnlockFill size="1rem" />}
                 text="Your Password"
+                type="password"
                 onChangeHandler={(e) => setPassword(e.target.value)}
               />
               {/* Forgot Password */}
               <div className="flex items-center mb-6 ">
                 <div className="flex ml-auto ">
-                  <a
-                    href="#"
+                  <Link
+                    to={'/forgot-password'}
                     className="inline-flex text-xs font-thin text-gray-500 sm:text-sm hover:text-gray-700 "
                   >
                     Forgot Your Password?
-                  </a>
+                  </Link>
                 </div>
               </div>
               {/* Login Button */}

@@ -5,12 +5,18 @@ import createHttpError,{isHttpError} from "http-errors";
 // Routes
 import userRoutes from './routes/userRoutes'
 import productRoutes from './routes/productRoutes'
+import cookieParser from 'cookie-parser'
+import passport from 'passport';
+import authPassport from './middleware/passport'
 const app = express();
 
 // middleware
 app.use(morgan("dev"));
 // it tell express to accept json as body(it converts req.body into json)
 app.use(express.json());
+app.use(cookieParser())
+app.use(passport.initialize());
+authPassport(passport);
 /* this is middleware that catches that get which then check the noteRoutes
 and look which one is there */
 app.use(function(req, res, next) {

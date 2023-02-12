@@ -16,6 +16,8 @@ export interface User extends Document {
   createdAt?: Date;
   resetPasswordToken?: string;
   resetPasswordExpire?: string;
+  isUserVerified: boolean;
+  verifyToken?: string;
   getJwtToken(): string;
   comparePassword(pass: string): string;
 }
@@ -61,6 +63,13 @@ const userSchema: Schema = new Schema(
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    isUserVerified: {
+      type: Boolean,
+      default: false
+    },
+    verifyToken: {
+      type: String
+    }
   },
   { timestamps: true }
 );

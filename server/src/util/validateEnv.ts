@@ -6,4 +6,5 @@ export default cleanEnv(process.env,{
     PORT: port(),
     JWT_SECRETKEY: str(),
     JWT_EXPIRE: num(),
+    FRONTEND_URL: str(),
 })

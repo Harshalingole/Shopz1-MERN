@@ -1,7 +1,9 @@
+import {  Response } from 'express';
 import { User } from '../models/userModel';
 import env from '../util/validateEnv'
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sendToken = (user: User,statusCode: number,res:any) => {
+const sendToken = (user: User,statusCode: number,res:Response) => {
     const token = user.getJwtToken();
     const option: {
         expires: Date,
@@ -10,7 +12,8 @@ const sendToken = (user: User,statusCode: number,res:any) => {
         expires : new Date(Date.now() + env.JWT_EXPIRE ),
         httpOnly : true
     }
-    res.status(statusCode).cookie('token',token,option).json({
+    res.cookie("jwt",token,option)
+    res.status(statusCode).json({
         success: true,
         user,
         token
